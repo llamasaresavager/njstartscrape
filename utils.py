@@ -31,7 +31,7 @@ def download_from_njstart(url, binary_location=BINARY_LOCATION, download_directo
     prefs = {'download.default_directory': download_directory}
     chrome_options.add_experimental_option('prefs', prefs)
     browser = webdriver.Chrome(options=chrome_options)
-
+    
     # Navigate to the page
     browser.get(url)
 

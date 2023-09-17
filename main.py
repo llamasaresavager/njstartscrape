@@ -1,4 +1,5 @@
 import os
+import shutil
 from utils import get_urls_from_xls, download_from_njstart
 
 def scrape_and_save_data(url_objs, download_directory):
@@ -23,9 +24,16 @@ def scrape_and_save_data(url_objs, download_directory):
         doc_id_directory = os.path.join(download_directory, doc_id)
         if not os.path.exists(doc_id_directory):
             os.makedirs(doc_id_directory)
-
-        # Download the data into the specific directory
-        download_from_njstart(url_to_scrape, download_directory=doc_id_directory)
+            
+            # Download the data into the specific directory
+            try:
+                download_from_njstart(url_to_scrape, download_directory=doc_id_directory)
+            except Exception as e:
+                print(f"Error downloading data for doc_id {doc_id}. Exception: {e}")
+                # Delete the doc_id_directory since the download failed
+                shutil.rmtree(doc_id_directory)
+        else:
+            print(f"Directory for doc_id {doc_id} already exists. Skipping download.")
 
 
 xls_file_path = '/home/localadmin/Desktop/njstartscrape/njstartscrape/bidSearchResults.xls'
